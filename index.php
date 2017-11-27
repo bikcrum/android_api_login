@@ -2,46 +2,61 @@
 
 require_once 'user.php';
 
-$password = "";
-
+$name = "";
 $email = "";
+$contactNo = "";
+$password = "";
+$confirmPassword = "";
 
+if (isset($_POST['task'])) {
 
-if (isset($_POST['email'])) {
+    $task = $_POST['task'];
+    $userObject = new User();
 
-    $email = $_POST['email'];
+    if ($task == 'login') {
 
+        if (isset($_POST['password'])) {
+            $password = $_POST['password'];
+        }
+
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+        }
+
+        if (isset($_POST['password'])) {
+            $password = $_POST['password'];
+        }
+
+        $hashed_password = md5($password);
+
+        $json_array = $userObject->login($email, $hashed_password);
+
+        echo json_encode($json_array);
+
+    } else if ($task == 'register') {
+
+        if (isset($_POST['name'])) {
+            $name = $_POST['name'];
+        }
+
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+        }
+
+        if (isset($_POST['contact_no'])) {
+            $contactNo = $_POST['contact_no'];
+        }
+
+        if (isset($_POST['password'])) {
+            $password = $_POST['password'];
+        }
+
+        $hashed_password = md5($password);
+
+        $json_registration = $userObject->register($name, $email, $contactNo, $hashed_password);
+
+        echo json_encode($json_registration);
+    }
 }
 
-if (isset($_POST['password'])) {
-
-    $password = $_POST['password'];
-
-}
-
-
-$userObject = new User();
-
-// Registration
-/*
-if(!empty($username) && !empty($password) && !empty($email)){
-
-    $hashed_password = md5($password);
-
-    $json_registration = $userObject->createNewRegisterUser($username, $hashed_password, $email);
-
-    echo json_encode($json_registration);
-
-}
-*/
-// Login
-
-if (!empty($email) && !empty($password)) {
-
-    $hashed_password = md5($password);
-
-    $json_array = $userObject->loginUsers($email, $password);
-
-    echo json_encode($json_array);
-}
 ?>
