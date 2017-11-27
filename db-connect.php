@@ -12,7 +12,7 @@ class DbConnect
 
         $this->connect = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        if ($this->connect) {
+        if (!$this->connect) {
             echo "Unable to connect to MySQL Database: " . mysqli_connect_error();
         }
     }
